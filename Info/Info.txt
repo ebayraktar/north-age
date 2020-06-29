@@ -1,0 +1,65 @@
+NORTH-AGE
+-	Bildirim olacak
+	Firebase projesi oluşturulmalı
+-	App intro Furkan'dan alacağım
+-	Kullanıcı girişi olsun
+	-	Email
+	-	Password
+	-	Telefon numarası (Zorunlu değil)
+-	Misafir girişi olsun
+
+-	Ana sayfa Master/Detail Page olacak
+-	Ana sayfanın üzerinde (Toolbar) Favoriler, Sepet gibi ikonlarımız
+olacak
+-	Ürün detayı
+	Image
+	Ürün adı
+	Ürün rate (Herkes oylayabilecek. [Bir cihaz bir kez])
+	Ürün bilgisi
+	Sepete ekle butonu fab olarak gösterilecek
+	Yorum yapma Popup menü olarak açılsın.
+	Stok kodu, Kategori, Etiketler footer'a eklensin
+	Screen02
+	
+	
+-	Sepet web sayfasındaki gibi olacak
+-	İstek listesi
+	Beğendiği ürünler listelenecek
+-	İstek listesine eklenen ürünler için;
+		O ürün stoğa eklenince kullanıcıya bildirim gitsin.
+	
+-	Hamburger Menü:
+	Sosyal Medya Hesaplarımız
+		Instagram ...
+-	İletişim
+-	Hakkımızda
+		Privacy Policy
+
+-	İletişim Sayfası (Öncelik WordPress'deki DB'ye tablo oluşturup
+oraya basmak)
+	*Ad, Soyad
+	*Email
+	*Mesaj
+	(Tarih ve saat de basacağız)
+	
+-	Ana sayfanın tasarımı Screen01'dedir.
+-	Arama olayı tüm sayfalar için toolbarda olacak;
+Ancak ana sayfa için aramayı ayrı bir edittextten yapacağız
+-	Uygulamadaki bütün fotoğraflar dinamik olsun, (Butonların arka 
+planları dahil).
+
+	
+	
+	
+	
+	
+ARAŞTIRMALAR
+Ödeme Modülleri
+-	OpenCard
+-	Woocommers
+-	PresstaShop
+-	Whmcs
+-	Android otomatik mail gönderme olayı
+-	phpAdminPanel için Backend yazıp veritabanı ile 
+iletişim kurmaya bakacağız
+-	cPanel'den veritabanı incelenecek
