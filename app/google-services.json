@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "323454650296",
+    "firebase_url": "https://north-age.firebaseio.com",
+    "project_id": "north-age",
+    "storage_bucket": "north-age.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323454650296:android:ad625a79fe08ca3455f14d",
+        "android_client_info": {
+          "package_name": "com.nage.north_age"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "323454650296-ibs1mbmcvvsrfm9juf0ao87ooivitqe6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nage.north_age",
+            "certificate_hash": "c07f5089fc12df97e173c9a31f9fae04f3ce0d71"
+          }
+        },
+        {
+          "client_id": "323454650296-k5nkvsa5h67a9fq2kpsr4tn3j55p232s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_iTXVnVqrO5lbFFll2MKg8n8-83kVXMg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "323454650296-k5nkvsa5h67a9fq2kpsr4tn3j55p232s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323454650296:android:817c9fb75748cdb155f14d",
+        "android_client_info": {
+          "package_name": "com.nageofficial.north_age"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "323454650296-k5nkvsa5h67a9fq2kpsr4tn3j55p232s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_iTXVnVqrO5lbFFll2MKg8n8-83kVXMg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "323454650296-k5nkvsa5h67a9fq2kpsr4tn3j55p232s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

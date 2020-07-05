@@ -7,7 +7,27 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_home">Ana Sayfa</string>
+    <string name="email">E-posta</string>
+    <string name="password">Parola</string>
+    <string name="remember_me">Beni hatırla</string>
+    <string name="login">GİRİŞ YAP</string>
+    <string name="not_a_member">Üye değil misin?</string>
+    <string name="sign_up_now">Hemen üye ol!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_about">Hakkımızda</string>
+    <string name="todo">todo</string>
+    <string name="sign_up">KAYIT OL</string>
+    <string name="name">Ad</string>
+    <string name="surname">Soyad</string>
+    <string name="password_confirm">Parola Tekrar</string>
+    <string name="or">YA DA</string>
+    <string name="guest_login">MİSAFİR GİRİŞİ</string>
+    <string name="default_notification_channel_id">NorthAgeNotify</string>
+    <string name="channel_name">North Age</string>
+    <string name="channel_description">North Age Bildirimleri</string>
+    <string name="ok">Tamam</string>
+    <string name="exit">Çıkış</string>
+    <string name="products">Ürünler</string>
 </resources>

@@ -1,0 +1,16 @@
+Day 01	-	02072020
+
++	Login
+	+	Design
+	+	Code
++	Signup
+	+	Design
+		+	Email
+		+	Password
+	+	Code
+		
++	Guest Login
+	+	Code
+
++	Notification
+	+	Code

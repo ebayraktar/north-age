@@ -10,16 +10,26 @@
         android:name="com.nage.north_age.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/nav_products"
+        android:name="com.nage.north_age.ui.products.ProductsFragment"
+        android:label="@string/products"
+        tools:layout="@layout/fragment_products">
+        <argument
+            android:name="param1"
+            android:defaultValue="371"
+            app:argType="string" />
+    </fragment>
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.nage.north_age.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_about"
+        android:name="com.nage.north_age.ui.about.AboutFragment"
+        android:label="@string/menu_about"
+        tools:layout="@layout/fragment_about">
+        <argument
+            android:name="param1"
+            android:defaultValue="371"
+            app:argType="string" />
+    </fragment>
 
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.nage.north_age.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
 </navigation>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/av_splash_animation"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="@dimen/fab_margin"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="3795-success-animation.json"
+        app:lottie_loop="false" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_toEndOf="@id/av_splash_animation"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/tvMessage"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvTitle"
+        android:layout_marginHorizontal="@dimen/fab_margin"
+        android:layout_marginTop="@dimen/fab_margin" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvPositive"
+        style="@style/buttonCardView"
+        android:layout_width="96dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/tvMessage"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:id="@+id/tvPositive"
+            style="@style/buttonText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/ok" />
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
