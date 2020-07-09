@@ -1,5 +1,7 @@
 package com.nage.north_age.ui.products;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -22,15 +24,21 @@ public class ProductsViewModel extends ViewModel {
         mData = new MutableLiveData<>();
     }
 
-    public LiveData<List<Product>> getProducts() {
+    public LiveData<List<Product>> getProducts(int categoryID) {
         Map<String, String> filter = new HashMap<>();
-        filter.put("category", "469");
+        filter.put("category", String.valueOf(categoryID));
+        filter.put("per_page", "100");
         woocommerce.ProductRepository().filter(filter).enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                List<Product> categoriesResponse = response.body();
-                if (categoriesResponse != null)
+                if (response.body() != null) {
                     mData.setValue(response.body());
+                    for (String name : response.headers().names()) {
+                        for (String value : response.headers().values(name)) {
+                            Log.d("TAG", "onResponse: headerNames: " + name + " - Value:" + value);
+                        }
+                    }
+                }
             }
 
             @Override

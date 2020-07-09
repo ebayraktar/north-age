@@ -3,13 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.about.AboutFragment">
+    tools:context="com.nage.north_age.ui.contact.ContactFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="HAKKIMIZDA SAYFASI" />
+        android:text="CONTACT" />
 
 </FrameLayout>

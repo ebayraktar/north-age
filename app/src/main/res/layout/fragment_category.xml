@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.nage.north_age.ui.products.ProductsFragment">
+    tools:context="com.nage.north_age.ui.category.CategoryFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcyProducts"
+        android:id="@+id/rcyCategories"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/category_list_item" />

@@ -1,18 +1,15 @@
 package com.nage.north_age.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.nage.north_age.R;
 import com.nage.north_age.interfaces.SliderOnClickListener;
 import com.nage.north_age.models.SliderItem;
-import com.nage.north_age.R;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
 import java.util.ArrayList;
@@ -61,6 +58,8 @@ public class HomeSliderAdapter extends SliderViewAdapter<HomeSliderAdapter.Slide
         Glide.with(viewHolder.itemView)
                 .load(sliderItem.getImageUrl())
                 .fitCenter()
+                .placeholder(R.drawable.ic_outline_terrain_24)
+                .error(R.drawable.ic_outline_broken_image_24)
                 .into(viewHolder.imageViewBackground);
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {

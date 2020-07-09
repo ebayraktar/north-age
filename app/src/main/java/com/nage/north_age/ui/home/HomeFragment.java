@@ -22,16 +22,22 @@ import com.nage.north_age.adapters.HomeSliderAdapter;
 import com.nage.north_age.interfaces.SliderOnClickListener;
 import com.nage.north_age.models.HomeButton;
 import com.nage.north_age.models.SliderItem;
+import com.nage.north_age.ui.productDetail.ProductDetailFragment;
+import com.nage.north_age.views.MainActivity;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+import me.gilo.woodroid.models.Product;
+
+public class HomeFragment extends Fragment implements View.OnClickListener {
 
     HomeViewModel mViewModel;
     SearchView svHome;
+
+    private static final String TAG = "TAG";
     SliderView imageSlider;
     HomeSliderAdapter homeSliderAdapter;
     LottieAnimationView av_splash_animation;
@@ -62,20 +68,54 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        svHome.setOnSearchClickListener(new View.OnClickListener() {
+
+        svHome.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onClick(View v) {
-                SearchView sw = (SearchView) v;
-                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setTitle("Query")
-                        .setMessage(((SearchView) v).getQuery())
+            public boolean onQueryTextSubmit(String query) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Arama Sayfası")
+                        .setMessage(query + " aranıyor...")
                         .setPositiveButton("TAMAM", null)
                         .create().show();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        initSlider();
+        initViewModel();
+        initButtons();
+    }
+
+    void initSlider() {
+        homeSliderAdapter = new HomeSliderAdapter(getContext());
+        imageSlider.setSliderAdapter(homeSliderAdapter);
+
+        homeSliderAdapter.setOnClickListener(new SliderOnClickListener() {
+            @Override
+            public void OnClick(int ID) {
+                Log.d(TAG, "OnClick: " + ID);
+                Bundle bundle = new Bundle();
+                bundle.putString("productID", String.valueOf(ID));
+                ((MainActivity) getActivity()).loadFragment(R.id.nav_product_detail, bundle);
             }
         });
 
-        homeSliderAdapter = new HomeSliderAdapter(getContext());
-        imageSlider.setSliderAdapter(homeSliderAdapter);
+        imageSlider.setIndicatorEnabled(true);
+        imageSlider.setIndicatorAnimation(IndicatorAnimationType.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+        imageSlider.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+        imageSlider.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
+        imageSlider.setIndicatorSelectedColor(getContext().getResources().getColor(R.color.colorAccent));
+        imageSlider.setIndicatorUnselectedColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
+        imageSlider.setScrollTimeInSec(4); //set scroll delay in seconds :
+        imageSlider.startAutoCycle();
+
+    }
+
+    void initViewModel() {
         mViewModel = new HomeViewModel();
         mViewModel.getCategories().observe(getViewLifecycleOwner(), new Observer<List<SliderItem>>() {
             @Override
@@ -94,6 +134,8 @@ public class HomeFragment extends Fragment {
                             Glide.with(getContext())
                                     .load(button.getImageUrl())
                                     .fitCenter()
+                                    .placeholder(R.drawable.ic_outline_terrain_24)
+                                    .error(R.drawable.ic_outline_broken_image_24)
                                     .into(ivBestSellers);
                             tvBestSeller.setText(button.getDescription());
                             break;
@@ -101,6 +143,8 @@ public class HomeFragment extends Fragment {
                             Glide.with(getContext())
                                     .load(button.getImageUrl())
                                     .fitCenter()
+                                    .placeholder(R.drawable.ic_outline_terrain_24)
+                                    .error(R.drawable.ic_outline_broken_image_24)
                                     .into(ivTheNewest);
                             tvTheNewest.setText(button.getDescription());
                             break;
@@ -108,6 +152,8 @@ public class HomeFragment extends Fragment {
                             Glide.with(getContext())
                                     .load(button.getImageUrl())
                                     .fitCenter()
+                                    .placeholder(R.drawable.ic_outline_terrain_24)
+                                    .error(R.drawable.ic_outline_broken_image_24)
                                     .into(ivCampaigns);
                             tvCampaigns.setText(button.getDescription());
                             break;
@@ -115,23 +161,31 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-
-
-        homeSliderAdapter.setOnClickListener(new SliderOnClickListener() {
-            @Override
-            public void OnClick(int ID) {
-                Log.d("TAG", "OnClick: " + ID);
-            }
-        });
-
-        imageSlider.setIndicatorEnabled(true);
-        imageSlider.setIndicatorAnimation(IndicatorAnimationType.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
-        imageSlider.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
-        imageSlider.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
-        imageSlider.setIndicatorSelectedColor(getContext().getResources().getColor(R.color.colorAccent));
-        imageSlider.setIndicatorUnselectedColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
-        imageSlider.setScrollTimeInSec(4); //set scroll delay in seconds :
-        imageSlider.startAutoCycle();
     }
 
+    void initButtons() {
+        ivBestSellers.setOnClickListener(this);
+        ivTheNewest.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Bundle bundle = new Bundle();
+        switch (v.getId()) {
+            case R.id.ivBestSellers:
+                bundle.putString(ProductDetailFragment.ARG_PRODUCT_ID, "0");
+                ((MainActivity) getActivity()).loadFragment(R.id.nav_products, bundle);
+                break;
+            case R.id.ivTheNewest:
+                bundle = new Bundle();
+                bundle.putString(ProductDetailFragment.ARG_PRODUCT_ID, "0");
+                ((MainActivity) getActivity()).loadFragment(R.id.nav_products, bundle);
+                break;
+            case R.id.ivCampaigns:
+                break;
+            default:
+
+                break;
+        }
+    }
 }

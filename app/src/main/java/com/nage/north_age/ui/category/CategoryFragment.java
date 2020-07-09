@@ -1,7 +1,6 @@
-package com.nage.north_age.ui.products;
+package com.nage.north_age.ui.category;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,42 +15,33 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.nage.north_age.R;
-import com.nage.north_age.adapters.ProductAdapter;
+import com.nage.north_age.adapters.CategoryAdapter;
 import com.nage.north_age.views.MainActivity;
 
 import java.util.List;
 
-import me.gilo.woodroid.models.Product;
+import me.gilo.woodroid.models.Category;
 
-public class ProductsFragment extends Fragment implements ProductAdapter.OnProductListener {
+public class CategoryFragment extends Fragment implements CategoryAdapter.OnCategoryListener {
 
     private static final String ARG_CATEGORY_ID = "categoryID";
 
-    private ProductsViewModel mViewModel;
+    private CategoryViewModel mViewModel;
     private int categoryID;
 
     LottieAnimationView av_splash_animation;
-    RecyclerView rcyProducts;
-    ProductAdapter productAdapter;
-    List<Product> currentProducts;
+    RecyclerView rcyCategories;
+    CategoryAdapter categoryAdapter;
+    List<Category> currentCategories;
 
-
-    public ProductsFragment() {
+    public CategoryFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param categoryID Parameter 1.
-     * @return A new instance of fragment ProductsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProductsFragment newInstance(String categoryID) {
-        ProductsFragment fragment = new ProductsFragment();
+    public static CategoryFragment newInstance(String _categoryID) {
+        CategoryFragment fragment = new CategoryFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_CATEGORY_ID, categoryID);
+        args.putString(ARG_CATEGORY_ID, _categoryID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,37 +59,36 @@ public class ProductsFragment extends Fragment implements ProductAdapter.OnProdu
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_products, container, false);
+        View view = inflater.inflate(R.layout.fragment_category, container, false);
+        rcyCategories = view.findViewById(R.id.rcyCategories);
         av_splash_animation = view.findViewById(R.id.av_splash_animation);
-        rcyProducts = view.findViewById(R.id.rcyProducts);
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("TAG", "onActivityCreated: " + categoryID);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 2);
-        rcyProducts.setLayoutManager(mLayoutManager);
-        productAdapter = new ProductAdapter(this);
-        rcyProducts.setAdapter(productAdapter);
+        rcyCategories.setLayoutManager(mLayoutManager);
+        categoryAdapter = new CategoryAdapter(this);
+        rcyCategories.setAdapter(categoryAdapter);
 
-        mViewModel = ViewModelProviders.of(this).get(ProductsViewModel.class);
-        mViewModel.getProducts(categoryID).observe(getViewLifecycleOwner(), new Observer<List<Product>>() {
+        mViewModel = ViewModelProviders.of(this).get(CategoryViewModel.class);
+        mViewModel.getCategories(categoryID).observe(getViewLifecycleOwner(), new Observer<List<Category>>() {
             @Override
-            public void onChanged(List<Product> products) {
-                currentProducts = products;
-                productAdapter.setProducts(products);
+            public void onChanged(List<Category> categories) {
+                currentCategories = categories;
+                categoryAdapter.setCategories(categories);
                 av_splash_animation.setVisibility(View.GONE);
             }
         });
     }
 
     @Override
-    public void onProductClick(int position) {
-        Product product = currentProducts.get(position);
+    public void onCategoryClick(int position) {
+        Category category = currentCategories.get(position);
         Bundle bundle = new Bundle();
-        bundle.putString("productID", String.valueOf(product.getId()));
-        ((MainActivity) getActivity()).loadFragment(R.id.nav_product_detail, bundle);
+        bundle.putString("categoryID", String.valueOf(category.getId()));
+        ((MainActivity) getActivity()).loadFragment(R.id.nav_products, bundle);
     }
 }

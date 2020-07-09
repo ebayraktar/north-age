@@ -28,6 +28,12 @@
     <string name="channel_name">North Age</string>
     <string name="channel_description">North Age Bildirimleri</string>
     <string name="ok">Tamam</string>
-    <string name="exit">Çıkış</string>
+    <string name="menu_exit">Çıkış</string>
     <string name="products">Ürünler</string>
+    <string name="product_detail">Ürün Detayları</string>
+    <string name="action_login">Giriş</string>
+    <string name="see_reviews">İncelemeleri Gör</string>
+    <string name="categories">Kategoriler</string>
+    <string name="tags">Etiketler</string>
+    <string name="menu_contact">İletişim</string>
 </resources>

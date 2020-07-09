@@ -8,6 +8,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.nage.north_age.SplashActivity;
 import com.nage.north_age.managers.MyNotificationManager;
+import com.nage.north_age.views.MainActivity;
 
 public class MyFirebaseService extends FirebaseMessagingService {
     static String TAG = "TAG";
