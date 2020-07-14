@@ -22,15 +22,12 @@ public class CategoryViewModel extends ViewModel {
         mData = new MutableLiveData<>();
     }
 
-    public LiveData<List<Category>> getCategories() {
-        return getCategories(0);
-    }
-
     public LiveData<List<Category>> getCategories(int parentID) {
         ProductCategoryFilter productCategoryFilter = new ProductCategoryFilter();
         int[] parents = new int[1];
         parents[0] = parentID;
         productCategoryFilter.setParent(parents);
+        productCategoryFilter.setPer_page(100);
         woocommerce.CategoryRepository().categories(productCategoryFilter).enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {

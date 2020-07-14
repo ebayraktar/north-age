@@ -13,6 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nage.north_age.R;
+import com.nage.north_age.views.MainActivity;
+
+import java.util.Objects;
 
 public class ContactFragment extends Fragment {
 
@@ -25,7 +28,8 @@ public class ContactFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_contact, container, false);
+        View view = inflater.inflate(R.layout.fragment_contact, container, false);
+        return view;
     }
 
     @Override

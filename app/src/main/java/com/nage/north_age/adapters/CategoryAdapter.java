@@ -3,6 +3,8 @@ package com.nage.north_age.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,17 +20,21 @@ import java.util.List;
 
 import me.gilo.woodroid.models.Category;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> implements Filterable {
     List<Category> categories;
+    List<Category> originalCategories;
     private OnCategoryListener onCategoryListener;
 
     public CategoryAdapter(OnCategoryListener onCategoryListener) {
         categories = new ArrayList<>();
+        originalCategories = new ArrayList<>(categories);
         this.onCategoryListener = onCategoryListener;
+
     }
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+        originalCategories = new ArrayList<>(categories);
         notifyDataSetChanged();
     }
 
@@ -56,6 +62,40 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public int getItemCount() {
         return categories.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return categoryFilter;
+    }
+    private Filter categoryFilter = new Filter(){
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Category> filteredList = new ArrayList<>();
+            if(constraint == null || constraint.length() == 0){
+                filteredList.addAll(originalCategories);
+            }
+            else{
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (Category item: originalCategories){
+                    if(item.getName().toLowerCase().contains(filterPattern)){
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return  results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            categories.clear();
+            categories.addAll((List)results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final ImageView ivCategory;

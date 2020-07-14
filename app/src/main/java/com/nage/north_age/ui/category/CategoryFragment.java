@@ -1,12 +1,17 @@
 package com.nage.north_age.ui.category;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -16,9 +21,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.nage.north_age.R;
 import com.nage.north_age.adapters.CategoryAdapter;
+import com.nage.north_age.ui.products.ProductsFragment;
 import com.nage.north_age.views.MainActivity;
 
 import java.util.List;
+import java.util.Objects;
 
 import me.gilo.woodroid.models.Category;
 
@@ -47,6 +54,35 @@ public class CategoryFragment extends Fragment implements CategoryAdapter.OnCate
     }
 
     @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        //inflater.inflate(R.menu.main, menu);
+        final MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
+        myActionMenuItem.setVisible(true);
+        final SearchView svMenu = (SearchView) myActionMenuItem.getActionView();
+
+        svMenu.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Toast like print
+                //UserFeedback.show( "SearchOnQueryTextSubmit: " + query);
+                if (!svMenu.isIconified()) {
+                    svMenu.setIconified(true);
+                }
+                myActionMenuItem.collapseActionView();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
+                categoryAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
+        //super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -54,6 +90,7 @@ public class CategoryFragment extends Fragment implements CategoryAdapter.OnCate
             assert _categoryID != null;
             categoryID = Integer.parseInt(_categoryID);
         }
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -62,6 +99,7 @@ public class CategoryFragment extends Fragment implements CategoryAdapter.OnCate
         View view = inflater.inflate(R.layout.fragment_category, container, false);
         rcyCategories = view.findViewById(R.id.rcyCategories);
         av_splash_animation = view.findViewById(R.id.av_splash_animation);
+        Objects.requireNonNull(((MainActivity) getActivity())).setTitle(R.string.categories);
         return view;
     }
 
@@ -78,7 +116,11 @@ public class CategoryFragment extends Fragment implements CategoryAdapter.OnCate
             @Override
             public void onChanged(List<Category> categories) {
                 currentCategories = categories;
-                categoryAdapter.setCategories(categories);
+                Category allProducts = new Category();
+                allProducts.setId(categoryID);
+                allProducts.setName("Tüm ürünler");
+                currentCategories.add(allProducts);
+                categoryAdapter.setCategories(currentCategories);
                 av_splash_animation.setVisibility(View.GONE);
             }
         });
@@ -89,6 +131,8 @@ public class CategoryFragment extends Fragment implements CategoryAdapter.OnCate
         Category category = currentCategories.get(position);
         Bundle bundle = new Bundle();
         bundle.putString("categoryID", String.valueOf(category.getId()));
-        ((MainActivity) getActivity()).loadFragment(R.id.nav_products, bundle);
+        ProductsFragment fragment = new ProductsFragment();
+        fragment.setArguments(bundle);
+        ((MainActivity) getActivity()).addFragment(fragment);
     }
 }

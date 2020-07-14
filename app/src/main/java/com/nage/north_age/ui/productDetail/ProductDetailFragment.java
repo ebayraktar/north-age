@@ -19,6 +19,8 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,19 +28,23 @@ import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.nage.north_age.R;
 import com.nage.north_age.adapters.HomeSliderAdapter;
+import com.nage.north_age.adapters.ReviewAdapter;
 import com.nage.north_age.interfaces.SliderOnClickListener;
 import com.nage.north_age.models.SliderItem;
+import com.nage.north_age.views.MainActivity;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import me.gilo.woodroid.models.Attribute;
 import me.gilo.woodroid.models.Category;
 import me.gilo.woodroid.models.Image;
 import me.gilo.woodroid.models.Product;
+import me.gilo.woodroid.models.ProductReview;
 import me.gilo.woodroid.models.Tag;
 
 public class ProductDetailFragment extends Fragment {
@@ -115,6 +121,7 @@ public class ProductDetailFragment extends Fragment {
         tvCategories = view.findViewById(R.id.tvCategories);
         tvTags = view.findViewById(R.id.tvTags);
         fabAdd = view.findViewById(R.id.fabAdd);
+        Objects.requireNonNull(((MainActivity) getActivity())).setTitle(R.string.product_detail);
         return view;
     }
 
@@ -154,11 +161,14 @@ public class ProductDetailFragment extends Fragment {
         cvReviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("İncelemeler")
-                        .setMessage("İncelemeler sayfası açılıyor...")
-                        .setNegativeButton("TAMAM", null)
-                        .create().show();
+                mViewModel.getProductReviews(productID).observe(getViewLifecycleOwner(), new Observer<List<ProductReview>>() {
+                    @Override
+                    public void onChanged(List<ProductReview> productReviews) {
+                        if (productReviews != null && productReviews.size() > 0) {
+                            showReviews(productReviews);
+                        }
+                    }
+                });
             }
         });
         fabAdd.setOnClickListener(new View.OnClickListener() {
@@ -184,7 +194,7 @@ public class ProductDetailFragment extends Fragment {
         });
     }
 
-    private void invalidProductID() {
+    void invalidProductID() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("HATA")
                 .setMessage("Ürün detayı bulunamadı!")
@@ -241,10 +251,10 @@ public class ProductDetailFragment extends Fragment {
         productSliderAdapter.renewItems(items);
 //        Gson gson = new Gson();
 //        String json = gson.toJson(product);
-//        Log.d("TAG", "initProduct: " + json);
-//        if (!product.isIn_stock()) {
-//            cvSoldOut.setVisibility(View.VISIBLE);
-//        }
+        Log.d("TAG", "initProduct: " + product.isIn_stock());
+        if (!product.isIn_stock()) {
+            cvSoldOut.setVisibility(View.VISIBLE);
+        }
     }
 
     void initSlider() {
@@ -266,6 +276,19 @@ public class ProductDetailFragment extends Fragment {
         imageSliderProduct.setIndicatorUnselectedColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
         imageSliderProduct.setScrollTimeInSec(4); //set scroll delay in seconds :
         imageSliderProduct.startAutoCycle();
+    }
+
+    void showReviews(List<ProductReview> productReviews) {
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_review, null, false);
+        TextView tvTitle = view.findViewById(R.id.tvTitle);
+        RecyclerView rcReviews = view.findViewById(R.id.rcReviews);
+        rcReviews.setAdapter(new ReviewAdapter(productReviews));
+        rcReviews.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        tvTitle.setText(currentProduct.getName() + " İncelemeleri");
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Light_NoTitleBar_Fullscreen);
+        builder.setView(view)
+                .create().show();
     }
 
     private void hideLoading() {

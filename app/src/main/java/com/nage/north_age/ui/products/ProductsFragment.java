@@ -3,11 +3,15 @@ package com.nage.north_age.ui.products;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -17,9 +21,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.nage.north_age.R;
 import com.nage.north_age.adapters.ProductAdapter;
+import com.nage.north_age.ui.productDetail.ProductDetailFragment;
 import com.nage.north_age.views.MainActivity;
 
 import java.util.List;
+import java.util.Objects;
 
 import me.gilo.woodroid.models.Product;
 
@@ -57,6 +63,35 @@ public class ProductsFragment extends Fragment implements ProductAdapter.OnProdu
     }
 
     @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        Log.d("TAG", "onCreateOptionsMenu: HEAD");
+        //inflater.inflate(R.menu.main, menu);
+        final MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
+        myActionMenuItem.setVisible(true);
+        final SearchView svMenu = (SearchView) myActionMenuItem.getActionView();
+
+        svMenu.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Toast like print
+                //UserFeedback.show( "SearchOnQueryTextSubmit: " + query);
+                if (!svMenu.isIconified()) {
+                    svMenu.setIconified(true);
+                }
+                myActionMenuItem.collapseActionView();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
+                productAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -64,6 +99,7 @@ public class ProductsFragment extends Fragment implements ProductAdapter.OnProdu
             assert _categoryID != null;
             categoryID = Integer.parseInt(_categoryID);
         }
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -72,6 +108,7 @@ public class ProductsFragment extends Fragment implements ProductAdapter.OnProdu
         View view = inflater.inflate(R.layout.fragment_products, container, false);
         av_splash_animation = view.findViewById(R.id.av_splash_animation);
         rcyProducts = view.findViewById(R.id.rcyProducts);
+        Objects.requireNonNull(((MainActivity) getActivity())).setTitle(R.string.products);
         return view;
     }
 
@@ -100,6 +137,8 @@ public class ProductsFragment extends Fragment implements ProductAdapter.OnProdu
         Product product = currentProducts.get(position);
         Bundle bundle = new Bundle();
         bundle.putString("productID", String.valueOf(product.getId()));
-        ((MainActivity) getActivity()).loadFragment(R.id.nav_product_detail, bundle);
+        ProductDetailFragment fragment = new ProductDetailFragment();
+        fragment.setArguments(bundle);
+        ((MainActivity) getActivity()).addFragment(fragment);
     }
 }

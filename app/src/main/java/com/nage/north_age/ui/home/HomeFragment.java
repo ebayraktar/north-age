@@ -29,6 +29,7 @@ import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 
 import java.util.List;
+import java.util.Objects;
 
 import me.gilo.woodroid.models.Product;
 
@@ -52,17 +53,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        svHome = root.findViewById(R.id.svHome);
-        imageSlider = root.findViewById(R.id.imageSlider);
-        av_splash_animation = root.findViewById(R.id.av_splash_animation);
-        ivBestSellers = root.findViewById(R.id.ivBestSellers);
-        tvBestSeller = root.findViewById(R.id.tvBestSeller);
-        ivTheNewest = root.findViewById(R.id.ivTheNewest);
-        tvTheNewest = root.findViewById(R.id.tvTheNewest);
-        ivCampaigns = root.findViewById(R.id.ivCampaigns);
-        tvCampaigns = root.findViewById(R.id.tvCampaigns);
-        return root;
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        svHome = view.findViewById(R.id.svHome);
+        imageSlider = view.findViewById(R.id.imageSlider);
+        av_splash_animation = view.findViewById(R.id.av_splash_animation);
+        ivBestSellers = view.findViewById(R.id.ivBestSellers);
+        tvBestSeller = view.findViewById(R.id.tvBestSeller);
+        ivTheNewest = view.findViewById(R.id.ivTheNewest);
+        tvTheNewest = view.findViewById(R.id.tvTheNewest);
+        ivCampaigns = view.findViewById(R.id.ivCampaigns);
+        tvCampaigns = view.findViewById(R.id.tvCampaigns);
+        Objects.requireNonNull(((MainActivity) getActivity())).setTitle(R.string.app_name);
+        return view;
     }
 
     @Override
@@ -100,7 +102,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 Log.d(TAG, "OnClick: " + ID);
                 Bundle bundle = new Bundle();
                 bundle.putString("productID", String.valueOf(ID));
-                ((MainActivity) getActivity()).loadFragment(R.id.nav_product_detail, bundle);
+//                ((MainActivity) getActivity()).loadFragment(R.id.action_nav_home_to_nav_product_detail, bundle);
             }
         });
 
@@ -174,12 +176,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.ivBestSellers:
                 bundle.putString(ProductDetailFragment.ARG_PRODUCT_ID, "0");
-                ((MainActivity) getActivity()).loadFragment(R.id.nav_products, bundle);
+//                ((MainActivity) getActivity()).loadFragment(R.id.nav_products, bundle);
                 break;
             case R.id.ivTheNewest:
                 bundle = new Bundle();
                 bundle.putString(ProductDetailFragment.ARG_PRODUCT_ID, "0");
-                ((MainActivity) getActivity()).loadFragment(R.id.nav_products, bundle);
+//                ((MainActivity) getActivity()).loadFragment(R.id.nav_products, bundle);
                 break;
             case R.id.ivCampaigns:
                 break;
