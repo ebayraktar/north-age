@@ -8,28 +8,40 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.nage.north_age.R;
 import com.nage.north_age.adapters.ProductAdapter;
+import com.nage.north_age.models.NorthAgeModel;
 import com.nage.north_age.ui.productDetail.ProductDetailFragment;
 import com.nage.north_age.views.MainActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import me.gilo.woodroid.models.Product;
 
-public class ProductsFragment extends Fragment implements ProductAdapter.OnProductListener {
+public class ProductsFragment extends Fragment implements ProductAdapter.OnProductListener, View.OnClickListener {
 
     private static final String ARG_CATEGORY_ID = "categoryID";
 
@@ -40,26 +52,15 @@ public class ProductsFragment extends Fragment implements ProductAdapter.OnProdu
     RecyclerView rcyProducts;
     ProductAdapter productAdapter;
     List<Product> currentProducts;
-
+    ImageView ivBack, ivForward, ivViewTwo, ivViewThree, ivFilter;
+    Spinner spPerPage;
+    TextView tvPage;
+    int currentPage;
+    int perPage;
+    List<Integer> perPageList;
 
     public ProductsFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param categoryID Parameter 1.
-     * @return A new instance of fragment ProductsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProductsFragment newInstance(String categoryID) {
-        ProductsFragment fragment = new ProductsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_CATEGORY_ID, categoryID);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -108,6 +109,13 @@ public class ProductsFragment extends Fragment implements ProductAdapter.OnProdu
         View view = inflater.inflate(R.layout.fragment_products, container, false);
         av_splash_animation = view.findViewById(R.id.av_splash_animation);
         rcyProducts = view.findViewById(R.id.rcyProducts);
+        ivBack = view.findViewById(R.id.ivBack);
+        tvPage = view.findViewById(R.id.tvPage);
+        ivForward = view.findViewById(R.id.ivForward);
+        ivViewTwo = view.findViewById(R.id.ivViewTwo);
+        ivViewThree = view.findViewById(R.id.ivViewThree);
+        ivFilter = view.findViewById(R.id.ivFilter);
+        spPerPage = view.findViewById(R.id.spPerPage);
         Objects.requireNonNull(((MainActivity) getActivity())).setTitle(R.string.products);
         return view;
     }
@@ -120,16 +128,71 @@ public class ProductsFragment extends Fragment implements ProductAdapter.OnProdu
         rcyProducts.setLayoutManager(mLayoutManager);
         productAdapter = new ProductAdapter(this);
         rcyProducts.setAdapter(productAdapter);
-
-        mViewModel = ViewModelProviders.of(this).get(ProductsViewModel.class);
-        mViewModel.getProducts(categoryID).observe(getViewLifecycleOwner(), new Observer<List<Product>>() {
+        currentPage = 1;
+        perPage = 10;
+        perPageList = new ArrayList<>();
+        perPageList.add(10);
+        perPageList.add(20);
+        perPageList.add(50);
+        perPageList.add(100);
+        mViewModel = new ViewModelProvider(this).get(ProductsViewModel.class);
+        ivBack.setOnClickListener(this);
+        ivForward.setOnClickListener(this);
+        ivViewThree.setOnClickListener(this);
+        ivFilter.setOnClickListener(this);
+        ivViewTwo.setOnClickListener(this);
+        SpinnerAdapter adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, perPageList);
+        spPerPage.setAdapter(adapter);
+        spPerPage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onChanged(List<Product> products) {
-                currentProducts = products;
-                productAdapter.setProducts(products);
-                av_splash_animation.setVisibility(View.GONE);
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                perPage = perPageList.get(position);
+                currentPage = 1;
+                getProducts();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
+        initialize();
+    }
+
+    void initialize() {
+        mViewModel.getProducts(categoryID, currentPage, perPage).observe(getViewLifecycleOwner(), new Observer<NorthAgeModel>() {
+            @Override
+            public void onChanged(NorthAgeModel northAgeModel) {
+                Gson gson = new Gson();
+                List<Product> products = gson.fromJson(northAgeModel.getObjectJson(),
+                        new TypeToken<List<Product>>() {
+                        }.getType());
+                currentProducts = products;
+                productAdapter.setProducts(products);
+                av_splash_animation.setVisibility(View.INVISIBLE);
+                setPageControls(northAgeModel);
+            }
+        });
+    }
+
+    void getProducts() {
+        av_splash_animation.setVisibility(View.VISIBLE);
+        mViewModel.getProducts(categoryID, currentPage, perPage);
+    }
+
+    void setPageControls(NorthAgeModel northAgeModel) {
+        if (northAgeModel.isHasNext()) {
+            ivForward.setVisibility(View.VISIBLE);
+        } else {
+            ivForward.setVisibility(View.INVISIBLE);
+        }
+
+        if (northAgeModel.isHasPrev()) {
+            ivBack.setVisibility(View.VISIBLE);
+        } else {
+            ivBack.setVisibility(View.INVISIBLE);
+        }
+        tvPage.setText(String.valueOf(currentPage));
     }
 
     @Override
@@ -139,6 +202,31 @@ public class ProductsFragment extends Fragment implements ProductAdapter.OnProdu
         bundle.putString("productID", String.valueOf(product.getId()));
         ProductDetailFragment fragment = new ProductDetailFragment();
         fragment.setArguments(bundle);
-        ((MainActivity) getActivity()).addFragment(fragment);
+        Objects.requireNonNull(((MainActivity) getActivity())).addFragment(fragment);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ivBack:
+                currentPage--;
+                getProducts();
+                break;
+            case R.id.ivForward:
+                currentPage++;
+                getProducts();
+                break;
+            case R.id.ivViewThree:
+                RecyclerView.LayoutManager mThreeLayoutManager = new GridLayoutManager(getContext(), 3);
+                rcyProducts.setLayoutManager(mThreeLayoutManager);
+                break;
+            case R.id.ivViewTwo:
+                RecyclerView.LayoutManager mTwoLayoutManager = new GridLayoutManager(getContext(), 2);
+                rcyProducts.setLayoutManager(mTwoLayoutManager);
+                break;
+            case R.id.ivFilter:
+
+                break;
+        }
     }
 }

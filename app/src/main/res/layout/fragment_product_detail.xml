@@ -27,12 +27,12 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvSoldOut"
-        android:visibility="gone"
         android:layout_width="96dp"
         android:layout_height="36dp"
         android:layout_below="@id/cvProductFav"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="8dp"
+        android:visibility="gone"
         app:cardBackgroundColor="@color/colorAccent"
         app:cardCornerRadius="@dimen/fab_margin">
 
@@ -102,6 +102,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:gravity="center_vertical" />
+
+            <RatingBar
+                android:id="@+id/rbProductRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:max="5" />
 
             <TextView
                 android:id="@+id/tvProductPrice"

@@ -1,7 +1,6 @@
 package com.nage.north_age.ui.category;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,7 +32,6 @@ public class CategoryFragment extends Fragment implements CategoryAdapter.OnCate
 
     private static final String ARG_CATEGORY_ID = "categoryID";
 
-    private CategoryViewModel mViewModel;
     private int categoryID;
 
     LottieAnimationView av_splash_animation;
@@ -43,14 +41,6 @@ public class CategoryFragment extends Fragment implements CategoryAdapter.OnCate
 
     public CategoryFragment() {
         // Required empty public constructor
-    }
-
-    public static CategoryFragment newInstance(String _categoryID) {
-        CategoryFragment fragment = new CategoryFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_CATEGORY_ID, _categoryID);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -110,8 +100,8 @@ public class CategoryFragment extends Fragment implements CategoryAdapter.OnCate
         rcyCategories.setLayoutManager(mLayoutManager);
         categoryAdapter = new CategoryAdapter(this);
         rcyCategories.setAdapter(categoryAdapter);
-
-        mViewModel = ViewModelProviders.of(this).get(CategoryViewModel.class);
+        //mViewModel = ViewModelProviders.of(this).get(CategoryViewModel.class);
+        CategoryViewModel mViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         mViewModel.getCategories(categoryID).observe(getViewLifecycleOwner(), new Observer<List<Category>>() {
             @Override
             public void onChanged(List<Category> categories) {
@@ -133,6 +123,6 @@ public class CategoryFragment extends Fragment implements CategoryAdapter.OnCate
         bundle.putString("categoryID", String.valueOf(category.getId()));
         ProductsFragment fragment = new ProductsFragment();
         fragment.setArguments(bundle);
-        ((MainActivity) getActivity()).addFragment(fragment);
+        Objects.requireNonNull((MainActivity) getActivity()).addFragment(fragment);
     }
 }

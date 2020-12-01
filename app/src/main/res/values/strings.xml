@@ -42,4 +42,11 @@
     <string name="rate_text">Oyunuz*</string>
     <string name="rate">Incelemeniz</string>
     <string name="rating">İnceleme Yap</string>
+
+    <integer-array name="per_page">
+        10,
+        20,
+        50,
+        100
+    </integer-array>
 </resources>

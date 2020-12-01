@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,7 +10,34 @@
         android:id="@+id/rcyCategories"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/llPaging"
         tools:listitem="@layout/category_list_item" />
+
+    <RelativeLayout
+        android:id="@+id/llPaging"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="@dimen/fab_margin">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:rotation="180"
+            android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+            android:tint="@color/colorPrimaryDark" />
+
+        <ImageView
+            android:id="@+id/ivForward"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+            android:tint="@color/colorPrimaryDark" />
+
+    </RelativeLayout>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/av_splash_animation"
@@ -22,4 +49,4 @@
         app:lottie_fileName="719-loading.json"
         app:lottie_loop="true" />
 
-</FrameLayout>
+</RelativeLayout>

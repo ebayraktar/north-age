@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -26,6 +27,8 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.nage.north_age.R;
 import com.nage.north_age.adapters.HomeSliderAdapter;
 import com.nage.north_age.adapters.ReviewAdapter;
@@ -63,6 +66,7 @@ public class ProductDetailFragment extends Fragment {
     ImageView ivProductFav;
     LottieAnimationView av_splash_animation;
     SliderView imageSliderProduct;
+    RatingBar rbProductRate;
     TextView tvProductName, tvProductPrice, tvProductDescription, tvCategories, tvTags;
     LinearLayout llAttributes;
     RelativeLayout rlRoot;
@@ -110,6 +114,7 @@ public class ProductDetailFragment extends Fragment {
         ivProductFav = view.findViewById(R.id.ivProductFav);
         av_splash_animation = view.findViewById(R.id.av_splash_animation);
         imageSliderProduct = view.findViewById(R.id.imageSliderProduct);
+        rbProductRate = view.findViewById(R.id.rbProductRate);
         tvProductName = view.findViewById(R.id.tvProductName);
         tvProductDescription = view.findViewById(R.id.tvProductDescription);
         tvProductPrice = view.findViewById(R.id.tvProductPrice);
@@ -212,6 +217,7 @@ public class ProductDetailFragment extends Fragment {
     private void initProduct(Product product) {
         currentProduct = product;
         tvProductName.setText(product.getName());
+        //rbProductRate.setNumStars(product.ra);
         tvProductPrice.setText("₺ " + product.getPrice());
         tvProductDescription.setText(product.getShort_description());
         llAttributes.removeAllViews();
@@ -249,12 +255,11 @@ public class ProductDetailFragment extends Fragment {
             items.add(new SliderItem(image.getId(), image.getSrc()));
         }
         productSliderAdapter.renewItems(items);
-//        Gson gson = new Gson();
-//        String json = gson.toJson(product);
-        Log.d("TAG", "initProduct: " + product.isIn_stock());
-        if (!product.isIn_stock()) {
-            cvSoldOut.setVisibility(View.VISIBLE);
-        }
+        float rating = Float.parseFloat(product.getAverage_rating());
+        rbProductRate.setRating(rating);
+//        if (!product.isIn_stock()) {
+//            cvSoldOut.setVisibility(View.VISIBLE);
+//        }
     }
 
     void initSlider() {

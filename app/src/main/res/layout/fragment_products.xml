@@ -1,16 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.nage.north_age.ui.products.ProductsFragment">
 
+    <RelativeLayout
+        android:id="@+id/rlPageOptions"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <ImageView
+            android:id="@+id/ivFilter"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_toStartOf="@id/ivViewTwo"
+            android:src="@drawable/ic_baseline_filter_list_24" />
+
+        <ImageView
+            android:id="@+id/ivViewTwo"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_toStartOf="@id/ivViewThree"
+            android:src="@drawable/ic_baseline_looks_two_24" />
+
+        <ImageView
+            android:id="@+id/ivViewThree"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_toStartOf="@id/spPerPage"
+            android:src="@drawable/ic_baseline_looks_3_24" />
+
+        <Spinner
+            android:id="@+id/spPerPage"
+            android:layout_width="96dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcyProducts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/llPaging"
+        android:layout_below="@id/rlPageOptions"
         tools:listitem="@layout/category_list_item" />
+
+    <RelativeLayout
+        android:id="@+id/llPaging"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="@dimen/fab_margin">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:rotation="180"
+            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+
+        <TextView
+            android:id="@+id/tvPage"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center" />
+
+        <ImageView
+            android:id="@+id/ivForward"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+    </RelativeLayout>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/av_splash_animation"
@@ -22,4 +87,4 @@
         app:lottie_fileName="719-loading.json"
         app:lottie_loop="true" />
 
-</FrameLayout>
+</RelativeLayout>
