@@ -20,8 +20,8 @@ public class App extends Application {
     public static Woocommerce woocommerce;
 
     private static final String SITE_URL = "https://northageofficial.com";
-    private static final String CONSUMER_KEY = "ck_dd51adc235b7fb74c599204a61533f53120d5db2";
-    private static final String CONSUMER_SECRET = "cs_bd30d24c45e7cfe238e92c94279fa8b4d74a3314";
+    private static final String CONSUMER_KEY = "YOUR_KEY";
+    private static final String CONSUMER_SECRET = "YOUR_SECRET";
 
     @Override
     public void onCreate() {
